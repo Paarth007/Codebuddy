@@ -19,5 +19,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/adminHome', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.index')->middleware('is_admin');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('user.index')->middleware('is_admin');
+Route::middleware(['web'])->group(function () {
+    Route::get('/adminHome', [App\Http\Controllers\HomeController::class, 'adminHome'])->name('admin.index');
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
+    Route::resource('category', App\Http\Controllers\Admin\CategoryController::class);
+});
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('user.index');
